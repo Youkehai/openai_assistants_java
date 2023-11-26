@@ -18,9 +18,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>chatgpt-front</module>
-        <module>chatgpt-bootstrap</module>
-        <module>chatgpt-framework</module>
+        <module>assistants-front</module>
+        <module>assistants-bootstrap</module>
+        <module>assistants-framework</module>
     </modules>
 
     <properties>

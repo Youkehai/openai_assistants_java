@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>assistants-framework</artifactId>
+    <description>chatgpt-framework 一些通用的封装</description>
+    <version>1.0.0</version>
+    <groupId>com.kh.openai</groupId>
+    <properties>
+        <java.version>17</java.version>
+        <maven.plugin.version>3.11.0</maven.plugin.version>
+    </properties>
+
+    <packaging>pom</packaging>
+    <modules>
+        <module>openai-spring-boot-starter-assistant</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${maven.plugin.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

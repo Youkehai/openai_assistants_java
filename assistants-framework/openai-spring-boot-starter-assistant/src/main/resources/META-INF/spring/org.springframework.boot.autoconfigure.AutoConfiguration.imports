@@ -1,0 +1,2 @@
+com.kh.openai.framework.assistant.config.OpenAIProperties
+com.kh.openai.framework.assistant.config.ChatGptAssistantAutoConfiguration

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.5</version>
+        <relativePath/>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <developers>
+        <developer>
+            <name>youkehai</name>
+            <email>717407966@qq.com</email>
+            <url>https://github.com/Youkehai</url>
+        </developer>
+    </developers>
+
+    <groupId>com.kh.openai</groupId>
+    <artifactId>openai-spring-boot-starter-assistant</artifactId>
+    <name>assistants</name>
+    <version>1.0.0</version>
+    <description>
+        assistants api starter
+        提供出入参的封装，解析，请求地址，状态的枚举
+        分为不同的 service 处理不同的 openai 对象
+    </description>
+    <properties>
+        <java.version>17</java.version>
+        <hutool-all.version>5.8.23</hutool-all.version>
+        <lombok.version>1.18.26</lombok.version>
+        <maven.plugin.version>3.11.0</maven.plugin.version>
+        <apache-httpcomponents.version>4.5.14</apache-httpcomponents.version>
+    </properties>
+
+    <dependencies>
+        <!-- httpClient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${apache-httpcomponents.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool-all.version}</version>
+        </dependency>
+        <!-- Lombok -->
+        <!-- https://projectlombok.org/ -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${maven.plugin.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

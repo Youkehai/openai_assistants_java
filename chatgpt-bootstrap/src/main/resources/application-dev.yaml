@@ -1,9 +1,0 @@
-kh:
-  openai:
-    api-key:
-      - k1
-      - k2
-    baseurl: https://api.openai.com/v1
-logging:
-  level:
-    root: info
