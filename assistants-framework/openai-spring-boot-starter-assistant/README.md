@@ -16,7 +16,7 @@
 ```xml
 <dependency>
     <groupId>com.kh.openai</groupId>
-    <artifactId>chatgpt-spring-boot-starter-assistant</artifactId>
+    <artifactId>openai-spring-boot-starter-assistant</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
@@ -34,11 +34,12 @@ kh:
     baseurl: https://api.openai.com/v1
 ```
 
-**使用spi自动注入了三个service**
+**使用spi自动注入了四个service**
 
-- AssistantsMessageApiService   发送消息，消息列表等
-- AssistantsRunApiService            获取当前thread中运行任务，运行情况，发起运行等
+- AssistantsMessageApiService      发送消息，消息列表等
+- AssistantsRunApiService          获取当前thread中运行任务，运行情况，发起运行等
 - AssistantsThreadApiService       创建，删除，查询线程
+- AssistantsService                创建，删除，查询助理信息
 
 **代码中使用**
 
@@ -55,7 +56,7 @@ private AssistantsMessageApiService assistantsMessageApiService;
 │      ├─java
 │      │  └─com
 │      │      └─kh
-│      │          └─chatgpt
+│      │          └─openai
 │      │              └─framework
 │      │                  └─assistant
 │      │                      ├─config                 -- 自动注入，配置文件加载
