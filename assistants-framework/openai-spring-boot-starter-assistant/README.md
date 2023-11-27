@@ -28,10 +28,12 @@
 ```yaml
 kh:
   openai:
-    api-key:
+    api-key:  #必须配置，不然无法启动
       - k1
       - k2
-    baseurl: https://api.openai.com/v1
+    baseurl: https://api.openai.com/v1 #必须配置，不然无法启动
+    proxy-host: 127.0.0.1  #请求代理 ip，不配置则不会走代理
+    proxy-port: 7890 #请求代理端口
 ```
 
 **使用spi自动注入了四个service**

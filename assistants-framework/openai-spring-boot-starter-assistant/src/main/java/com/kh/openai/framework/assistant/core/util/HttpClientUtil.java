@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Header;
 import org.apache.http.HttpEntityEnclosingRequest;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
@@ -49,8 +50,8 @@ public class HttpClientUtil {
      * @param method 请求方式
      * @return 请求结果
      */
-    public static String doJson(String url, Map<String, String> headers, String jsonParam, String method) {
-        CloseableHttpClient httpclient = getHttpClient(null);
+    public static String doJson(String url, Map<String, String> headers, String jsonParam, String method, HttpHost proxy) {
+        CloseableHttpClient httpclient = getHttpClient(null,proxy);
         CloseableHttpResponse response = null;
         String jsonStr = null;
         try {
@@ -98,7 +99,7 @@ public class HttpClientUtil {
     }
 
 
-    public static CloseableHttpClient getHttpClient(Integer time) {
+    public static CloseableHttpClient getHttpClient(Integer time,HttpHost proxy) {
         try {
             TrustManager[] tm = {new MyX509TrustManager()};
             SSLContext ctx = SSLContext.getInstance(SSLConnectionSocketFactory.SSL);
@@ -132,7 +133,14 @@ public class HttpClientUtil {
                 HttpRequest request = clientContext.getRequest();
                 return !(request instanceof HttpEntityEnclosingRequest);
             };
-            return HttpClientBuilder.create().setRetryHandler(myRetryHandler).setConnectionManager(connectionManager).setDefaultRequestConfig(requestConfig).build();
+            HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
+                    .setRetryHandler(myRetryHandler)
+                    .setConnectionManager(connectionManager)
+                    .setDefaultRequestConfig(requestConfig);
+            if(proxy!=null){
+                httpClientBuilder.setProxy(proxy);
+            }
+            return httpClientBuilder.build();
         } catch (KeyManagementException | NoSuchAlgorithmException ex) {
             throw new RuntimeException(ex);
         }

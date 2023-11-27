@@ -22,6 +22,24 @@ public class OpenAIProperties implements InitializingBean {
 
     private String baseurl;
 
+    /**
+     * 请求代理 Ip
+     */
+    private String proxyHost;
+
+    /**
+     * 代理端口
+     */
+    private Integer proxyPort;
+
+    /**
+     * 是否需要请求代理
+     * @return
+     */
+    public boolean hasProxy(){
+        return StrUtil.isNotEmpty(proxyHost);
+    }
+
     public void setApiKey(List<String> apiKey) {
         this.apiKey = apiKey;
     }

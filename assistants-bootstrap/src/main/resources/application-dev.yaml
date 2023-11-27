@@ -5,6 +5,8 @@ kh:
       - k2
       - k3...
     baseurl: https://api.openai.com/v1
+    proxy-host: 127.0.0.1
+    proxy-port: 7890
 logging:
   level:
     root: info

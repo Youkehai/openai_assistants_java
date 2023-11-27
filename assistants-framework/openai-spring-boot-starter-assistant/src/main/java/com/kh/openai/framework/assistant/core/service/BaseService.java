@@ -16,6 +16,7 @@ import com.kh.openai.framework.assistant.core.util.HttpClientUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpHost;
 
 import java.util.List;
 import java.util.Map;
@@ -38,11 +39,16 @@ public abstract class BaseService {
 
     //请求头
     protected Map<String, String> headMap = MapUtil.newIdentityMap(3);
+    //请求代理对象
+    private static HttpHost proxy = null;
 
     @PostConstruct
     public void init() {
         headMap.put("Content-Type", "application/json; charset=utf-8");
         headMap.put("OpenAI-Beta", "assistants=v1");
+        if(properties.hasProxy()){
+            proxy=new HttpHost(properties.getProxyHost(),properties.getProxyPort()==null?-1:properties.getProxyPort());
+        }
     }
 
     private Map<String, String> getHeadMap() {
@@ -50,7 +56,6 @@ public abstract class BaseService {
         headMap.put("Authorization", "Bearer " + properties.randomApiKey());
         return headMap;
     }
-
 
     /**
      * 统一请求方法
@@ -73,7 +78,8 @@ public abstract class BaseService {
     }
 
     protected String request(String url, RequestUrlEnum requestUrlEnum, String reqVO) {
-        return HttpClientUtil.doJson(url, getHeadMap(), reqVO, requestUrlEnum.getMethod().getMethod());
+        return HttpClientUtil.doJson(url, getHeadMap(), reqVO,
+                requestUrlEnum.getMethod().getMethod(),proxy);
     }
 
     /**
