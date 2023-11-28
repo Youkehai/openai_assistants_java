@@ -37,7 +37,7 @@ import java.util.Map;
  * httpclient工具类
  */
 @Slf4j
-public class HttpClientUtil {
+public class HttpUtil {
 
     private static final int MAX_TIMEOUT = 50000;
 

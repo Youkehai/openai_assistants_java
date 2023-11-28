@@ -12,7 +12,7 @@ import com.kh.openai.framework.assistant.core.req.BaseReq;
 import com.kh.openai.framework.assistant.core.req.CommonPathReq;
 import com.kh.openai.framework.assistant.core.req.PageReq;
 import com.kh.openai.framework.assistant.core.resp.BasePageResp;
-import com.kh.openai.framework.assistant.core.util.HttpClientUtil;
+import com.kh.openai.framework.assistant.core.util.HttpUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public abstract class BaseService {
     //请求头
     protected Map<String, String> headMap = MapUtil.newIdentityMap(3);
     //请求代理对象
-    private static HttpHost proxy = null;
+    private HttpHost proxy = null;
 
     @PostConstruct
     public void init() {
@@ -78,7 +78,7 @@ public abstract class BaseService {
     }
 
     protected String request(String url, RequestUrlEnum requestUrlEnum, String reqVO) {
-        return HttpClientUtil.doJson(url, getHeadMap(), reqVO,
+        return HttpUtil.doJson(url, getHeadMap(), reqVO,
                 requestUrlEnum.getMethod().getMethod(),proxy);
     }
 
