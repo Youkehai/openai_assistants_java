@@ -15,9 +15,9 @@ public class BaseReq {
     /**
      * 源数据
      */
-    private Map<String,String> metadata;
+    private Map<String, String> metadata;
 
-    public static BaseReq empty(){
+    public static BaseReq empty() {
         return emptyObj;
     }
 }

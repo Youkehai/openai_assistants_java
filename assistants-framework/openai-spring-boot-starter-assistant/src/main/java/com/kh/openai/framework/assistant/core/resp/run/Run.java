@@ -2,9 +2,9 @@ package com.kh.openai.framework.assistant.core.resp.run;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kh.openai.framework.assistant.core.constant.RunStatusEnum;
 import com.kh.openai.framework.assistant.core.resp.BaseResp;
 import com.kh.openai.framework.assistant.core.util.DateUtil;
-import com.kh.openai.framework.assistant.core.constant.RunStatusEnum;
 import lombok.Data;
 
 import java.util.List;

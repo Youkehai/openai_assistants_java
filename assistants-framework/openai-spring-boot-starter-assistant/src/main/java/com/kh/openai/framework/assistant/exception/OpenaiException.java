@@ -1,7 +1,6 @@
 package com.kh.openai.framework.assistant.exception;
 
 import com.kh.openai.framework.assistant.core.resp.ErrorResp;
-import lombok.Data;
 import lombok.Getter;
 
 /**

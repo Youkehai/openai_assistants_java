@@ -1,6 +1,5 @@
 package com.kh.assistants.front.controller;
 
-import com.kh.openai.framework.assistant.core.constant.FilePurposeEnum;
 import com.kh.openai.framework.assistant.core.req.CommonPathReq;
 import com.kh.openai.framework.assistant.core.req.PageReq;
 import com.kh.openai.framework.assistant.core.req.file.UploadFileReq;

@@ -18,27 +18,29 @@ public class AssistantsMessageApiService extends BaseService {
 
     /**
      * 获取线程消息列表
-     * @param pathReq 线程 ID
+     *
+     * @param pathReq   线程 ID
      * @param pageReqVO 分页参数
      * @return 消息列表
      */
     public BasePageResp<Message> getMessageList(CommonPathReq pathReq, PageReq pageReqVO) {
-        log.info("获取线程的消息列表[message-list_message]，路径参数:{},请求参数:{}",pathReq,pageReqVO);
-        String request = super.requestByPage(RequestUrlEnum.LIST_MESSAGE, pageReqVO,pathReq);
-        log.info("获取线程的消息列表[message-list_message]，openai返回值：{}",request);
+        log.info("获取线程的消息列表[message-list_message]，路径参数:{},请求参数:{}", pathReq, pageReqVO);
+        String request = super.requestByPage(RequestUrlEnum.LIST_MESSAGE, pageReqVO, pathReq);
+        log.info("获取线程的消息列表[message-list_message]，openai返回值：{}", request);
         return super.parsePageData(request, Message.class);
     }
 
     /**
      * 获取线程消息列表
-     * @param pathReq 路径参数
+     *
+     * @param pathReq          路径参数
      * @param createMessageReq 消息，文件 id 内容
      * @return 消息列表
      */
     public Message createMessage(CommonPathReq pathReq, BaseReq createMessageReq) {
-        log.info("创建消息[message-list_message]，路径参数:{},请求参数:{}",pathReq, createMessageReq);
-        String request = super.request(RequestUrlEnum.CREATE_MESSAGE, createMessageReq,pathReq);
-        log.info("创建消息[message-list_message]，openai返回值：{}",request);
+        log.info("创建消息[message-list_message]，路径参数:{},请求参数:{}", pathReq, createMessageReq);
+        String request = super.request(RequestUrlEnum.CREATE_MESSAGE, createMessageReq, pathReq);
+        log.info("创建消息[message-list_message]，openai返回值：{}", request);
         return JSONUtil.toBean(request, Message.class);
     }
 }

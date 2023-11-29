@@ -21,7 +21,7 @@ public class Tool {
     private Function function;
 
     @Data
-    public static class Function{
+    public static class Function {
         /**
          * 函数描述
          */

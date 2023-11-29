@@ -2,7 +2,10 @@ package com.kh.openai.framework.assistant.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh.openai.framework.assistant.core.service.*;
+import com.kh.openai.framework.assistant.core.service.AssistantsMessageApiService;
+import com.kh.openai.framework.assistant.core.service.AssistantsRunApiService;
+import com.kh.openai.framework.assistant.core.service.AssistantsService;
+import com.kh.openai.framework.assistant.core.service.AssistantsThreadApiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;

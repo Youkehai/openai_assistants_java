@@ -17,7 +17,7 @@ public class SubmitOutputReq extends BaseReq {
      * 提交的内容
      */
     @Data
-    public static class Item{
+    public static class Item {
 
         /**
          * 本次是给哪个 call 提交的返回值

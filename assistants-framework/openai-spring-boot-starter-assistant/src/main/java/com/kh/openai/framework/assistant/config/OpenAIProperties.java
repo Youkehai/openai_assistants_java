@@ -6,7 +6,6 @@ import lombok.Data;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 import java.util.Random;
@@ -35,9 +34,10 @@ public class OpenAIProperties implements InitializingBean {
 
     /**
      * 是否需要请求代理
+     *
      * @return
      */
-    public boolean hasProxy(){
+    public boolean hasProxy() {
         return StrUtil.isNotEmpty(proxyHost);
     }
 
@@ -56,10 +56,10 @@ public class OpenAIProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if(StrUtil.isEmpty(this.baseurl)){
+        if (StrUtil.isEmpty(this.baseurl)) {
             throw new RuntimeException("必须设置 openai baseurl");
         }
-        if(CollUtil.isEmpty(this.apiKey)){
+        if (CollUtil.isEmpty(this.apiKey)) {
             throw new RuntimeException("必须设置 openai apikey");
         }
     }

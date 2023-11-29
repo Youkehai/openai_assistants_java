@@ -5,8 +5,6 @@
 - jdk17+
 - springboot 3.1.5 +
 
-
-
 ## 2.如何使用
 
 ### 2.1 直接引入starter
@@ -38,10 +36,10 @@ kh:
 
 **使用spi自动注入了四个service**
 
-- AssistantsMessageApiService      发送消息，消息列表等
-- AssistantsRunApiService          获取当前thread中运行任务，运行情况，发起运行等
-- AssistantsThreadApiService       创建，删除，查询线程
-- AssistantsService                创建，删除，查询助理信息
+- AssistantsMessageApiService 发送消息，消息列表等
+- AssistantsRunApiService 获取当前thread中运行任务，运行情况，发起运行等
+- AssistantsThreadApiService 创建，删除，查询线程
+- AssistantsService 创建，删除，查询助理信息
 
 **代码中使用**
 
@@ -88,8 +86,6 @@ private AssistantsMessageApiService assistantsMessageApiService;
 
 1.封装完所有api
 
-2.加强错误模块和日志的处理
+2.尽量跟进官网版本实时更新
 
-3.尽量跟进官网版本实时更新
-
-## 
+##  

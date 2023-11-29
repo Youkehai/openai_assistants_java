@@ -20,7 +20,7 @@ public class Message extends BaseResp {
 
     /**
      * 角色
-     *  One of user or assistant.
+     * One of user or assistant.
      */
     private String role;
 

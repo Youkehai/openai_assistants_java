@@ -27,9 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -58,8 +56,8 @@ public abstract class BaseService {
     @PostConstruct
     public void init() {
         headMap.put("OpenAI-Beta", "assistants=v1");
-        if(properties.hasProxy()){
-            proxy=new HttpHost(properties.getProxyHost(),properties.getProxyPort()==null?-1:properties.getProxyPort());
+        if (properties.hasProxy()) {
+            proxy = new HttpHost(properties.getProxyHost(), properties.getProxyPort() == null ? -1 : properties.getProxyPort());
         }
     }
 
@@ -109,6 +107,7 @@ public abstract class BaseService {
 
     /**
      * 上传
+     *
      * @param req 上传必要参数
      * @return file对象
      */
@@ -136,11 +135,12 @@ public abstract class BaseService {
 
     /**
      * 抛出 openai 返回的异常
+     *
      * @param result 结果
      */
-    private void throwException(String result){
+    private void throwException(String result) {
         JSONObject jsonObject = JSONUtil.parseObj(result);
-        if(jsonObject.containsKey("error") && jsonObject.getJSONObject("error")!=null){
+        if (jsonObject.containsKey("error") && jsonObject.getJSONObject("error") != null) {
             throw new OpenaiException(JSONUtil.toBean(jsonObject.getStr("error"), ErrorResp.class));
         }
     }

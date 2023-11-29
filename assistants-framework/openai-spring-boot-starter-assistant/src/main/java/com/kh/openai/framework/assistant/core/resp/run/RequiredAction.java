@@ -23,7 +23,7 @@ public class RequiredAction {
      * 需要提交的返回值信息
      */
     @Data
-    public static class SubmitToolOutputs{
+    public static class SubmitToolOutputs {
         /**
          * 目前需要提交返回值的所有函数信息
          */
@@ -35,7 +35,7 @@ public class RequiredAction {
      * 每一个需要等到调用的方法详情
      */
     @Data
-    public static class ToolCall{
+    public static class ToolCall {
         /**
          * 当前正在等待调用的 id
          * 在提交返回值时，需要用到它
@@ -57,7 +57,7 @@ public class RequiredAction {
      * 目前正在等待调用的 function 信息
      */
     @Data
-    public static class Function{
+    public static class Function {
         /**
          * 函数名称
          */

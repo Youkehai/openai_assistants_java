@@ -2,12 +2,10 @@ package com.kh.openai.framework.assistant.core.util;
 
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.*;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.Registry;
@@ -18,23 +16,20 @@ import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import javax.net.ssl.*;
-import java.io.*;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.TrustManager;
+import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
-import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 
@@ -47,17 +42,18 @@ public class HttpUtil {
     private static final int MAX_TIMEOUT = 50000;
 
     public static final String CHARSET = "UTF-8";
+
     /**
      * 聚合http请求
      *
-     * @param url 请求地址
-     * @param headers 请求头
+     * @param url       请求地址
+     * @param headers   请求头
      * @param jsonParam 请求体
-     * @param method 请求方式
+     * @param method    请求方式
      * @return 请求结果
      */
     public static String doJson(String url, Map<String, String> headers, String jsonParam, String method, HttpHost proxy) {
-        CloseableHttpClient httpclient = getHttpClient(null,proxy);
+        CloseableHttpClient httpclient = getHttpClient(null, proxy);
         CloseableHttpResponse response = null;
         String jsonStr = null;
         try {
@@ -97,7 +93,7 @@ public class HttpUtil {
                 try {
                     EntityUtils.consume(response.getEntity());
                 } catch (IOException e) {
-                    log.error("发送http请求发生错误：{}-》{}",e.getMessage(), e);
+                    log.error("发送http请求发生错误：{}-》{}", e.getMessage(), e);
                 }
             }
         }
@@ -110,8 +106,8 @@ public class HttpUtil {
      * @param url 请求路径
      * @return 请求结果字符串
      */
-    public static String doPostByFormData(String url, Map<String, String> headers,HttpEntity entity,HttpHost proxy) {
-        CloseableHttpClient httpClient = getHttpClient(null,proxy);
+    public static String doPostByFormData(String url, Map<String, String> headers, HttpEntity entity, HttpHost proxy) {
+        CloseableHttpClient httpClient = getHttpClient(null, proxy);
         String httpStr = null;
 
         CloseableHttpResponse response = null;
@@ -137,8 +133,7 @@ public class HttpUtil {
     }
 
 
-
-    public static CloseableHttpClient getHttpClient(Integer time,HttpHost proxy) {
+    public static CloseableHttpClient getHttpClient(Integer time, HttpHost proxy) {
         try {
             TrustManager[] tm = {new MyX509TrustManager()};
             SSLContext ctx = SSLContext.getInstance(SSLConnectionSocketFactory.SSL);
@@ -176,7 +171,7 @@ public class HttpUtil {
                     .setRetryHandler(myRetryHandler)
                     .setConnectionManager(connectionManager)
                     .setDefaultRequestConfig(requestConfig);
-            if(proxy!=null){
+            if (proxy != null) {
                 httpClientBuilder.setProxy(proxy);
             }
             return httpClientBuilder.build();

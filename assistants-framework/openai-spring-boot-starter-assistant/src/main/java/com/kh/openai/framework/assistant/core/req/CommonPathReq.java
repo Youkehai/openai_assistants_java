@@ -21,12 +21,14 @@ public class CommonPathReq {
     /**
      * 单独用一个这个方法，是因为该方法很常用
      * 创建一个带线程 ID 的路径参数对象
+     *
      * @param threadId 线程ID
      * @return 路径参数对象
      */
-    public static CommonPathReq newByThreadId(String threadId){
+    public static CommonPathReq newByThreadId(String threadId) {
         return new CommonPathReq().setThreadId(threadId);
     }
+
     /**
      * 线程 ID
      */
