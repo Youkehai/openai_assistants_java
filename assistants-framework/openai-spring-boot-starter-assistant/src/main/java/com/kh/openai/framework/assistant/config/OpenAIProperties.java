@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 @Data
-@Configuration
+@AutoConfiguration
 @ConfigurationProperties(prefix = "kh.openai")
 public class OpenAIProperties implements InitializingBean {
 

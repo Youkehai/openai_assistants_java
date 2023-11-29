@@ -11,15 +11,28 @@ import com.kh.openai.framework.assistant.core.constant.RequestUrlEnum;
 import com.kh.openai.framework.assistant.core.req.BaseReq;
 import com.kh.openai.framework.assistant.core.req.CommonPathReq;
 import com.kh.openai.framework.assistant.core.req.PageReq;
+import com.kh.openai.framework.assistant.core.req.file.UploadFileReq;
 import com.kh.openai.framework.assistant.core.resp.BasePageResp;
+import com.kh.openai.framework.assistant.core.resp.ErrorResp;
 import com.kh.openai.framework.assistant.core.util.HttpUtil;
+import com.kh.openai.framework.assistant.exception.OpenaiException;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.InputStreamBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -44,7 +57,6 @@ public abstract class BaseService {
 
     @PostConstruct
     public void init() {
-        headMap.put("Content-Type", "application/json; charset=utf-8");
         headMap.put("OpenAI-Beta", "assistants=v1");
         if(properties.hasProxy()){
             proxy=new HttpHost(properties.getProxyHost(),properties.getProxyPort()==null?-1:properties.getProxyPort());
@@ -78,8 +90,10 @@ public abstract class BaseService {
     }
 
     protected String request(String url, RequestUrlEnum requestUrlEnum, String reqVO) {
-        return HttpUtil.doJson(url, getHeadMap(), reqVO,
-                requestUrlEnum.getMethod().getMethod(),proxy);
+        String result = HttpUtil.doJson(url, getHeadMap(), reqVO,
+                requestUrlEnum.getMethod().getMethod(), proxy);
+        throwException(result);
+        return result;
     }
 
     /**
@@ -91,6 +105,44 @@ public abstract class BaseService {
 
     protected String request(RequestUrlEnum requestUrlEnum, BaseReq req) {
         return request(requestUrlEnum, req, CommonPathReq.empty());
+    }
+
+    /**
+     * 上传
+     * @param req 上传必要参数
+     * @return file对象
+     */
+    protected String upload(UploadFileReq req) {
+        String url = RequestUrlEnum.UPLOAD_FILE.getUrl(properties.getBaseurl(), null);
+        MultipartFile file = req.getFile();
+        if (file == null) {
+            throw new RuntimeException("上传文件为空");
+        }
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.setCharset(StandardCharsets.UTF_8);
+        try {
+            //为了兼容中文文件名，对文件名进行 url 编码，后续 file.getFileName 方法中进行了解码操作
+            String encodedFileName = URLEncoder.encode(Objects.requireNonNull(file.getOriginalFilename()), StandardCharsets.UTF_8);
+            builder.addPart("file", new InputStreamBody(file.getInputStream(), ContentType.create("application/octet-stream", StandardCharsets.UTF_8), encodedFileName));
+            builder.addTextBody("purpose", req.getPurpose());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String result = HttpUtil.doPostByFormData(url, getHeadMap(), builder.build(), proxy);
+        throwException(result);
+        return result;
+    }
+
+
+    /**
+     * 抛出 openai 返回的异常
+     * @param result 结果
+     */
+    private void throwException(String result){
+        JSONObject jsonObject = JSONUtil.parseObj(result);
+        if(jsonObject.containsKey("error") && jsonObject.getJSONObject("error")!=null){
+            throw new OpenaiException(JSONUtil.toBean(jsonObject.getStr("error"), ErrorResp.class));
+        }
     }
 
     /**

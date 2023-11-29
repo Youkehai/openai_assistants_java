@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kh.openai.framework.assistant.core.resp.BaseResp;
 import lombok.Data;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 /**
  * 上传文件之后的返回值
  */
@@ -20,4 +24,12 @@ public class File extends BaseResp {
 
     @JsonProperty("status_details")
     private String statusDetails;
+
+    /**
+     * 对文件名进行 url 解码
+     * @return 解码后的文件名
+     */
+    public String getFileName(){
+        return URLDecoder.decode(this.filename, StandardCharsets.UTF_8);
+    }
 }

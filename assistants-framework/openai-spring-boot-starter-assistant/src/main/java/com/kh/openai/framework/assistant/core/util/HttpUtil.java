@@ -2,13 +2,12 @@ package com.kh.openai.framework.assistant.core.util;
 
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.Header;
-import org.apache.http.HttpEntityEnclosingRequest;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpRequest;
+import org.apache.http.*;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.Registry;
@@ -19,17 +18,23 @@ import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import javax.net.ssl.*;
 import java.io.*;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -41,6 +46,7 @@ public class HttpUtil {
 
     private static final int MAX_TIMEOUT = 50000;
 
+    public static final String CHARSET = "UTF-8";
     /**
      * 聚合http请求
      *
@@ -97,6 +103,39 @@ public class HttpUtil {
         }
         return jsonStr;
     }
+
+    /**
+     * post提交，form data 格式
+     *
+     * @param url 请求路径
+     * @return 请求结果字符串
+     */
+    public static String doPostByFormData(String url, Map<String, String> headers,HttpEntity entity,HttpHost proxy) {
+        CloseableHttpClient httpClient = getHttpClient(null,proxy);
+        String httpStr = null;
+
+        CloseableHttpResponse response = null;
+        try {
+            HttpPost httpPost = new HttpPost(url);
+            setHeader(headers, httpPost);
+            httpPost.setEntity(entity);
+
+            response = httpClient.execute(httpPost);
+            httpStr = EntityUtils.toString(response.getEntity(), CHARSET);
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        } finally {
+            if (response != null) {
+                try {
+                    EntityUtils.consume(response.getEntity());
+                } catch (IOException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
+        }
+        return httpStr;
+    }
+
 
 
     public static CloseableHttpClient getHttpClient(Integer time,HttpHost proxy) {

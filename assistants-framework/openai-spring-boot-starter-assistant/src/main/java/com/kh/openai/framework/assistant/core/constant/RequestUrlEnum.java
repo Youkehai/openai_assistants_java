@@ -41,7 +41,8 @@ public enum RequestUrlEnum {
 
     /*******************************Assistant Start************************************/
     CREATE_ASSISTANTS("/assistants",RequestEnum.POST,"创建 assistants"),
-    RETRIEVE_ASSISTANT("/assistants/{assistantId}", RequestEnum.GET,"获取 assistants 详情")
+    RETRIEVE_ASSISTANT("/assistants/{assistantId}", RequestEnum.GET,"获取 assistants 详情"),
+    UPLOAD_FILE("/files",RequestEnum.POST,"上传文件"),
 
     /*******************************Assistant End************************************/
     ;
@@ -51,8 +52,11 @@ public enum RequestUrlEnum {
     private final String desc;
 
     public String getUrl(String baseurl, CommonPathReq commonPathReq){
-        Map<String, Object> pathParams = commonPathReq.getPathParams();
         String result = baseurl + this.url;
+        if(commonPathReq==null){
+            return result;
+        }
+        Map<String, Object> pathParams = commonPathReq.getPathParams();
         if(CollUtil.isNotEmpty(pathParams)){
             for (Map.Entry<String, Object> param : pathParams.entrySet()) {
                 if(param.getValue()!=null){
