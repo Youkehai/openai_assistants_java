@@ -53,7 +53,7 @@ public class AssistantsApiController {
     }
 
     @Operation(summary = "发送并运行消息")
-    @PostMapping("/message")
+    @PostMapping("/message/{threadId}")
     public Run messageList(@PathVariable("threadId") String threadId, CreateAndRunReq req) {
         assistantsMessageApiService.createMessage(CommonPathReq.newByThreadId(threadId), new CreateMessageReq().setContent(req.getContent()));
         return assistantsRunApiService.create(CommonPathReq.newByThreadId(threadId), new CreateRunReq().setAssistant_id(req.getAssistant_id()));
@@ -70,8 +70,6 @@ public class AssistantsApiController {
     public Assistants retrieveAssistants(@PathVariable("assistantsId") String assistantsId) {
         return assistantsService.retrieveAssistants(new CommonPathReq().setAssistantsId(assistantsId));
     }
-
-
 
 
     @Operation(summary = "上传文件")

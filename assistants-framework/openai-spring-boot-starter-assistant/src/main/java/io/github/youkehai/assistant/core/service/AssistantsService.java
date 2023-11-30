@@ -15,6 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AssistantsService extends BaseService {
 
+    /**
+     * 创建一个AI助理
+     * @param createAssistantReq 创建参数
+     * @return 创建成功的对象
+     */
     public Assistants createAssistant(CreateAssistantReq createAssistantReq) {
         log.debug("创建助理[assistant-create_assistants],请求参数:{}", createAssistantReq);
         String request = super.request(RequestUrlEnum.CREATE_ASSISTANTS, createAssistantReq);
@@ -22,6 +27,12 @@ public class AssistantsService extends BaseService {
         return parse(request, Assistants.class);
     }
 
+    /**
+     * 上传文件到 openai
+     *
+     * @param req 上传请求参数
+     * @return 文件对象，包含文件ID，名称等
+     */
     public File uploadFile(UploadFileReq req) {
         req.setPurpose(FilePurposeEnum.ASSISTANTS.getName());
         log.debug("上传文件[assistant-upload_file],请求参数:{}", req);
