@@ -13,7 +13,7 @@
 
 ```xml
 <dependency>
-    <groupId>com.kh.openai</groupId>
+    <groupId>io.github.youkehai</groupId>
     <artifactId>openai-spring-boot-starter-assistant</artifactId>
     <version>1.0.0</version>
 </dependency>

@@ -1,2 +1,2 @@
-com.kh.openai.framework.assistant.config.OpenAIProperties
-com.kh.openai.framework.assistant.config.ChatGptAssistantAutoConfiguration
+io.github.youkehai.assistant.config.OpenAIProperties
+io.github.youkehai.assistant.config.ChatGptAssistantAutoConfiguration

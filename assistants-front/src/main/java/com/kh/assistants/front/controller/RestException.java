@@ -1,7 +1,7 @@
 package com.kh.assistants.front.controller;
 
-import com.kh.openai.framework.assistant.core.resp.ErrorResp;
-import com.kh.openai.framework.assistant.exception.OpenaiException;
+import io.github.youkehai.assistant.core.resp.ErrorResp;
+import io.github.youkehai.assistant.exception.OpenaiException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
