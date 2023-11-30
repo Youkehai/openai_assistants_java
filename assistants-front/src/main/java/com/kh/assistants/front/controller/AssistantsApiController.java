@@ -7,12 +7,15 @@ import io.github.youkehai.assistant.core.req.message.CreateAndRunReq;
 import io.github.youkehai.assistant.core.req.message.CreateMessageReq;
 import io.github.youkehai.assistant.core.req.run.CreateRunReq;
 import io.github.youkehai.assistant.core.resp.BasePageResp;
+import io.github.youkehai.assistant.core.resp.assistants.Assistants;
 import io.github.youkehai.assistant.core.resp.file.File;
 import io.github.youkehai.assistant.core.resp.message.Message;
 import io.github.youkehai.assistant.core.resp.run.Run;
+import io.github.youkehai.assistant.core.resp.thread.Thread;
 import io.github.youkehai.assistant.core.service.AssistantsMessageApiService;
 import io.github.youkehai.assistant.core.service.AssistantsRunApiService;
 import io.github.youkehai.assistant.core.service.AssistantsService;
+import io.github.youkehai.assistant.core.service.AssistantsThreadApiService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -36,11 +39,17 @@ public class AssistantsApiController {
 
     private final AssistantsService assistantsService;
 
+    private final AssistantsThreadApiService assistantsThreadApiService;
+
 
     @Operation(summary = "获取消息列表")
     @GetMapping("/message/{threadId}")
     public BasePageResp<Message> messageList(@PathVariable("threadId") String threadId, PageReq pageReqVO) {
-        return assistantsMessageApiService.getMessageList(CommonPathReq.newByThreadId(threadId), pageReqVO);
+        BasePageResp<Message> messageList = assistantsMessageApiService.getMessageList(CommonPathReq.newByThreadId(threadId), pageReqVO);
+        for (Message datum : messageList.getData()) {
+            log.info("测试：{}",datum);
+        }
+        return messageList;
     }
 
     @Operation(summary = "发送并运行消息")
@@ -49,6 +58,21 @@ public class AssistantsApiController {
         assistantsMessageApiService.createMessage(CommonPathReq.newByThreadId(threadId), new CreateMessageReq().setContent(req.getContent()));
         return assistantsRunApiService.create(CommonPathReq.newByThreadId(threadId), new CreateRunReq().setAssistant_id(req.getAssistant_id()));
     }
+
+    @Operation(summary = "获取线程信息")
+    @GetMapping("/thread/{threadId}")
+    public Thread messageList(@PathVariable("threadId") String threadId) {
+        return assistantsThreadApiService.retrieveThread(CommonPathReq.newByThreadId(threadId));
+    }
+
+    @Operation(summary = "获取线程信息")
+    @GetMapping("/assistants/{assistantsId}")
+    public Assistants retrieveAssistants(@PathVariable("assistantsId") String assistantsId) {
+        return assistantsService.retrieveAssistants(new CommonPathReq().setAssistantsId(assistantsId));
+    }
+
+
+
 
     @Operation(summary = "上传文件")
     @PostMapping("/upload")

@@ -16,7 +16,7 @@ public class Content {
     /**
      * 内容
      */
-    private List<Text> text;
+    private Text text;
 
     /**
      * 内容

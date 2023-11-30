@@ -2,7 +2,9 @@ package io.github.youkehai.assistant.core.resp.assistants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.youkehai.assistant.core.resp.BaseResp;
+import io.github.youkehai.assistant.core.resp.run.Tool;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -11,6 +13,7 @@ import java.util.List;
  * Assistants 对象
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Assistants extends BaseResp {
 
     /**
@@ -37,7 +40,7 @@ public class Assistants extends BaseResp {
     /**
      * 助手启用的工具列表。每个助手最多可以有 128 个工具。工具类型可以是 code_interpreter、retrieval 或 function
      */
-    private List<String> tools;
+    private List<Tool> tools;
 
     /**
      * 附加到此助手的文件 ID 列表。助手最多可以附加 20 个文件。文件按创建日期升序排列

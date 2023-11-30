@@ -3,6 +3,7 @@ package io.github.youkehai.assistant.core.resp.file;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.youkehai.assistant.core.resp.BaseResp;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -11,6 +12,7 @@ import java.nio.charset.StandardCharsets;
  * 上传文件之后的返回值
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class File extends BaseResp {
 
     private String purpose;

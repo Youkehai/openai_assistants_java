@@ -3,6 +3,7 @@ package io.github.youkehai.assistant.core.req.assistants;
 import io.github.youkehai.assistant.core.resp.run.Tool;
 import io.github.youkehai.assistant.core.req.BaseReq;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * 创建 assistant
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class CreateAssistantReq extends BaseReq {
 
     /**

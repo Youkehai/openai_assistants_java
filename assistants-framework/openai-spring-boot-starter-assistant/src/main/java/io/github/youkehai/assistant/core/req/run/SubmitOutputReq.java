@@ -2,6 +2,7 @@ package io.github.youkehai.assistant.core.req.run;
 
 import io.github.youkehai.assistant.core.req.BaseReq;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  * 提交必要任务的返回值
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class SubmitOutputReq extends BaseReq {
 
     private List<Item> tool_outputs;

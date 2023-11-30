@@ -6,6 +6,7 @@ import io.github.youkehai.assistant.core.constant.RunStatusEnum;
 import io.github.youkehai.assistant.core.resp.BaseResp;
 import io.github.youkehai.assistant.core.util.DateUtil;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * 运行任务返回值
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Run extends BaseResp {
 
     @JsonProperty("thread_id")

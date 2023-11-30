@@ -1,10 +1,7 @@
 package io.github.youkehai.assistant.core.service;
 
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.youkehai.assistant.config.OpenAIProperties;
 import io.github.youkehai.assistant.core.constant.RequestUrlEnum;
@@ -23,11 +20,13 @@ import org.apache.http.HttpHost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.InputStreamBody;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -43,13 +42,13 @@ public abstract class BaseService {
      * 在 autoConfiguration 中实例化子类时会注入
      */
     @Resource
-    private ObjectMapper objectMapper;
+    protected ObjectMapper objectMapper;
 
     @Resource
     private OpenAIProperties properties;
 
     //请求头
-    protected Map<String, String> headMap = MapUtil.newIdentityMap(3);
+    protected Map<String, String> headMap = new HashMap<>(6);
     //请求代理对象
     private HttpHost proxy = null;
 
@@ -139,9 +138,14 @@ public abstract class BaseService {
      * @param result 结果
      */
     private void throwException(String result) {
-        JSONObject jsonObject = JSONUtil.parseObj(result);
-        if (jsonObject.containsKey("error") && jsonObject.getJSONObject("error") != null) {
-            throw new OpenaiException(JSONUtil.toBean(jsonObject.getStr("error"), ErrorResp.class));
+        try {
+            Map<String, Object> resultMap = objectMapper.readValue(result, new TypeReference<>() {
+            });
+            if (resultMap.containsKey("error") && resultMap.get("error") != null) {
+                throw new OpenaiException(parse(objectMapper.writeValueAsString(resultMap.get("error")), ErrorResp.class));
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -156,10 +160,10 @@ public abstract class BaseService {
     protected String requestByPage(RequestUrlEnum requestUrlEnum, PageReq pageReqVO, CommonPathReq commonPathReq) {
         String url = requestUrlEnum.getUrl(properties.getBaseurl(), commonPathReq);
         url += "?limit=" + pageReqVO.getLimit() + "&order=" + pageReqVO.getOrder();
-        if (StrUtil.isNotEmpty(pageReqVO.getAfter())) {
+        if (StringUtils.hasText(pageReqVO.getAfter())) {
             url += "&after=" + pageReqVO.getAfter();
         }
-        if (StrUtil.isNotEmpty(pageReqVO.getBefore())) {
+        if (StringUtils.hasText(pageReqVO.getBefore())) {
             url += "&before=" + pageReqVO.getBefore();
         }
         return request(url, requestUrlEnum, "");
@@ -174,17 +178,33 @@ public abstract class BaseService {
      * @return 转换好后的数据
      */
     public <T> BasePageResp<T> parsePageData(String result, Class<T> elementType) {
-        JSONObject all = JSONUtil.parseObj(result);
-        String data = all.getStr("data");
-        //移除 data 单独转换
-        all.remove("data");
-        BasePageResp<T> bean = JSONUtil.toBean(all, BasePageResp.class);
-        if (StrUtil.isNotEmpty(data)) {
-            // 此处有坑， 需要在 JVM 启动参数加上 ： --add-opens java.base/java.util=ALL-UNNAMED
-            List<T> dataList = JSONUtil.toList(data, elementType);
-            bean.setData(dataList);
+        BasePageResp<T> bean;
+        try {
+            bean = objectMapper.readValue(result, new TypeReference<>() {
+            });
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        List<T> data = bean.getData();
+        if (data != null && !data.isEmpty()) {
+            bean.setData(objectMapper.convertValue(data, objectMapper.getTypeFactory().constructCollectionType(List.class, elementType)));
         }
         return bean;
     }
 
+    /**
+     * 转换 json 返回值
+     *
+     * @param result      结果
+     * @param elementType 目标类型
+     * @param <T>         泛型
+     * @return 期望的类型
+     */
+    protected <T> T parse(String result, Class<T> elementType) {
+        try {
+            return objectMapper.readValue(result, elementType);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

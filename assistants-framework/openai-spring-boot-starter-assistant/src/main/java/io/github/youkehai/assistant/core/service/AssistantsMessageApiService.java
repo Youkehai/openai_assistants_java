@@ -1,6 +1,5 @@
 package io.github.youkehai.assistant.core.service;
 
-import cn.hutool.json.JSONUtil;
 import io.github.youkehai.assistant.core.constant.RequestUrlEnum;
 import io.github.youkehai.assistant.core.req.BaseReq;
 import io.github.youkehai.assistant.core.req.CommonPathReq;
@@ -24,9 +23,9 @@ public class AssistantsMessageApiService extends BaseService {
      * @return 消息列表
      */
     public BasePageResp<Message> getMessageList(CommonPathReq pathReq, PageReq pageReqVO) {
-        log.info("获取线程的消息列表[message-list_message]，路径参数:{},请求参数:{}", pathReq, pageReqVO);
+        log.debug("获取线程的消息列表[message-list_message]，路径参数:{},请求参数:{}", pathReq, pageReqVO);
         String request = super.requestByPage(RequestUrlEnum.LIST_MESSAGE, pageReqVO, pathReq);
-        log.info("获取线程的消息列表[message-list_message]，openai返回值：{}", request);
+        log.debug("获取线程的消息列表[message-list_message]，openai返回值：{}", request);
         return super.parsePageData(request, Message.class);
     }
 
@@ -38,9 +37,9 @@ public class AssistantsMessageApiService extends BaseService {
      * @return 消息列表
      */
     public Message createMessage(CommonPathReq pathReq, BaseReq createMessageReq) {
-        log.info("创建消息[message-list_message]，路径参数:{},请求参数:{}", pathReq, createMessageReq);
+        log.debug("创建消息[message-list_message]，路径参数:{},请求参数:{}", pathReq, createMessageReq);
         String request = super.request(RequestUrlEnum.CREATE_MESSAGE, createMessageReq, pathReq);
-        log.info("创建消息[message-list_message]，openai返回值：{}", request);
-        return JSONUtil.toBean(request, Message.class);
+        log.debug("创建消息[message-list_message]，openai返回值：{}", request);
+        return parse(request, Message.class);
     }
 }

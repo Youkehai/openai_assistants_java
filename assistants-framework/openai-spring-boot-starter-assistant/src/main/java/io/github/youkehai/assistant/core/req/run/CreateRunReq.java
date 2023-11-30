@@ -3,12 +3,14 @@ package io.github.youkehai.assistant.core.req.run;
 import io.github.youkehai.assistant.core.resp.run.Tool;
 import io.github.youkehai.assistant.core.req.BaseReq;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.List;
 
 @Data
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 public class CreateRunReq extends BaseReq {
 
     /**

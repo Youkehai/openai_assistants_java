@@ -41,7 +41,7 @@ public enum RequestUrlEnum {
 
     /*******************************Assistant Start************************************/
     CREATE_ASSISTANTS("/assistants", RequestEnum.POST, "创建 assistants"),
-    RETRIEVE_ASSISTANT("/assistants/{assistantId}", RequestEnum.GET, "获取 assistants 详情"),
+    RETRIEVE_ASSISTANT("/assistants/{assistantsId}", RequestEnum.GET, "获取 assistants 详情"),
     UPLOAD_FILE("/files", RequestEnum.POST, "上传文件"),
 
     /*******************************Assistant End************************************/

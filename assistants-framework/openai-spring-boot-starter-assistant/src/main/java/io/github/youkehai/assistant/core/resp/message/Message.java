@@ -3,6 +3,7 @@ package io.github.youkehai.assistant.core.resp.message;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.youkehai.assistant.core.resp.BaseResp;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * 消息内容
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Message extends BaseResp {
 
     /**

@@ -2,12 +2,14 @@ package io.github.youkehai.assistant.core.req.message;
 
 import io.github.youkehai.assistant.core.req.BaseReq;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
  * 发送消息
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 public class CreateMessageReq extends BaseReq {
 
