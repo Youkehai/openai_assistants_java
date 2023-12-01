@@ -37,5 +37,5 @@ public class CreateRunReq extends BaseReq {
      * 当需要使用 创建一个新线程，发完消息之后，立即 run 时使用
      * 相当于将 创建线程-发送消息-开启运行 变为一个动作
      */
-    private ThreadReq threadReq;
+    private ThreadReq thread;
 }
