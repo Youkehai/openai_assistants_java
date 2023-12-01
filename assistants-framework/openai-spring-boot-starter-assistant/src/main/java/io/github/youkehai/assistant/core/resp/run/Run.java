@@ -115,5 +115,5 @@ public class Run extends BaseResp {
     private List<Tool> tools;
 
     @JsonProperty("file_ids")
-    private String fileIds;
+    private List<String> fileIds;
 }

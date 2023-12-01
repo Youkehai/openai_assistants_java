@@ -13,7 +13,7 @@
         <dependency>
             <groupId>io.github.youkehai</groupId>
             <artifactId>openai-spring-boot-starter-assistant</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

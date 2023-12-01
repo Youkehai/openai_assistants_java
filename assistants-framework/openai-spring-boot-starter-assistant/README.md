@@ -9,13 +9,11 @@
 
 ### 2.1 直接引入starter
 
-**注意：目前还未放入maven中央仓库，需要使用，请先下载源码引入使用**
-
 ```xml
 <dependency>
     <groupId>io.github.youkehai</groupId>
     <artifactId>openai-spring-boot-starter-assistant</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2-SNAPSHOT</version>
 </dependency>
 ```
 

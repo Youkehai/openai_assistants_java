@@ -22,7 +22,7 @@
     <groupId>io.github.youkehai</groupId>
     <artifactId>openai-spring-boot-starter-assistant</artifactId>
     <name>assistants</name>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <description>
         assistants api starter
         提供出入参的封装，解析，请求地址，状态的枚举
