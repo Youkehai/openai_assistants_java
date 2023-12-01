@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.youkehai.assistant.config.OpenAIProperties;
+import io.github.youkehai.assistant.core.constant.FilePurposeEnum;
 import io.github.youkehai.assistant.core.constant.RequestUrlEnum;
 import io.github.youkehai.assistant.core.req.BaseReq;
 import io.github.youkehai.assistant.core.req.CommonPathReq;
@@ -11,6 +12,7 @@ import io.github.youkehai.assistant.core.req.PageReq;
 import io.github.youkehai.assistant.core.req.file.UploadFileReq;
 import io.github.youkehai.assistant.core.resp.BasePageResp;
 import io.github.youkehai.assistant.core.resp.ErrorResp;
+import io.github.youkehai.assistant.core.resp.file.File;
 import io.github.youkehai.assistant.core.util.HttpUtil;
 import io.github.youkehai.assistant.exception.OpenaiException;
 import jakarta.annotation.PostConstruct;
@@ -48,7 +50,7 @@ public abstract class BaseService {
     private OpenAIProperties properties;
 
     //请求头
-    protected Map<String, String> headMap = new HashMap<>(6);
+    protected Map<String, String> headMap = new HashMap<>(4);
     //请求代理对象
     private HttpHost proxy = null;
 
@@ -107,15 +109,19 @@ public abstract class BaseService {
     /**
      * 上传
      *
-     * @param req 上传必要参数
+     * @param file MultipartFile 文件对象，只上传 assistants 意图的文件
      * @return file对象
      */
-    protected String upload(UploadFileReq req) {
-        String url = RequestUrlEnum.UPLOAD_FILE.getUrl(properties.getBaseurl(), null);
-        MultipartFile file = req.getFile();
+    public File upload(MultipartFile file) {
         if (file == null) {
             throw new RuntimeException("上传文件为空");
         }
+        UploadFileReq req = new UploadFileReq();
+        req.setFile(file);
+        //只上传 assistants 意图的文件
+        req.setPurpose(FilePurposeEnum.ASSISTANTS.getName());
+        log.debug("请求上传文件接口[file-upload_file],请求参数：{}",req);
+        //转换文件
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.setCharset(StandardCharsets.UTF_8);
         try {
@@ -124,13 +130,16 @@ public abstract class BaseService {
             builder.addPart("file", new InputStreamBody(file.getInputStream(), ContentType.create("application/octet-stream", StandardCharsets.UTF_8), encodedFileName));
             builder.addTextBody("purpose", req.getPurpose());
         } catch (IOException e) {
+            log.error("上传文件，转换文件发生异常:{}",e.getMessage());
             throw new RuntimeException(e);
         }
+        //请求 api 上传
+        String url = RequestUrlEnum.UPLOAD_FILE.getUrl(properties.getBaseurl(), null);
         String result = HttpUtil.doPostByFormData(url, getHeadMap(), builder.build(), proxy);
+        log.debug("请求上传文件接口[file-upload_file],openai返回值：{}",result);
         throwException(result);
-        return result;
+        return parse(result, File.class);
     }
-
 
     /**
      * 抛出 openai 返回的异常

@@ -9,4 +9,4 @@ kh:
     proxy-port: 7890
 logging:
   level:
-    root: info
+    io.github.youkehai.assistant.core.service: debug

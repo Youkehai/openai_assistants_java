@@ -2,10 +2,7 @@ package io.github.youkehai.assistant.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.youkehai.assistant.core.service.AssistantsMessageApiService;
-import io.github.youkehai.assistant.core.service.AssistantsRunApiService;
-import io.github.youkehai.assistant.core.service.AssistantsThreadApiService;
-import io.github.youkehai.assistant.core.service.AssistantsService;
+import io.github.youkehai.assistant.core.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;

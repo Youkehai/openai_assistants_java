@@ -2,11 +2,12 @@ package com.kh.assistants.front.controller;
 
 import io.github.youkehai.assistant.core.req.CommonPathReq;
 import io.github.youkehai.assistant.core.req.PageReq;
-import io.github.youkehai.assistant.core.req.file.UploadFileReq;
+import io.github.youkehai.assistant.core.req.assistants.CreateAssistantFileReq;
 import io.github.youkehai.assistant.core.req.message.CreateAndRunReq;
 import io.github.youkehai.assistant.core.req.message.CreateMessageReq;
 import io.github.youkehai.assistant.core.req.run.CreateRunReq;
 import io.github.youkehai.assistant.core.resp.BasePageResp;
+import io.github.youkehai.assistant.core.resp.assistants.AssistantFile;
 import io.github.youkehai.assistant.core.resp.assistants.Assistants;
 import io.github.youkehai.assistant.core.resp.file.File;
 import io.github.youkehai.assistant.core.resp.message.Message;
@@ -47,7 +48,7 @@ public class AssistantsApiController {
     public BasePageResp<Message> messageList(@PathVariable("threadId") String threadId, PageReq pageReqVO) {
         BasePageResp<Message> messageList = assistantsMessageApiService.getMessageList(CommonPathReq.newByThreadId(threadId), pageReqVO);
         for (Message datum : messageList.getData()) {
-            log.info("测试：{}",datum);
+            log.info("测试：{}", datum);
         }
         return messageList;
     }
@@ -71,10 +72,26 @@ public class AssistantsApiController {
         return assistantsService.retrieveAssistants(new CommonPathReq().setAssistantsId(assistantsId));
     }
 
+    @Operation(summary = "单纯的只上传文件，给某次问答使用")
+    @GetMapping("/upload")
+    public File retrieveAssistants(MultipartFile file) {
+        return assistantsService.upload(file);
+    }
 
-    @Operation(summary = "上传文件")
-    @PostMapping("/upload")
-    public File messageList(MultipartFile file) {
-        return assistantsService.uploadFile(new UploadFileReq().setFile(file));
+    @Operation(summary = "上传文件并绑定具体的 assistant")
+    @PostMapping("/createAssistantFile/{assistantsId}")
+    public AssistantFile CreateAssistantFileReq(@PathVariable("assistantsId") String assistantsId, MultipartFile file, String fileId) {
+        //上传新文件并绑定
+        return assistantsService.uploadFile(new CreateAssistantFileReq()
+                .setAssistantId(assistantsId).setFile(file));
+        //从已有文件中，选出一个 id 来绑定
+//        assistantsService.uploadFile(new CreateAssistantFileReq()
+//                .setAssistantId(assistantsId).setFileId(fileId));
+    }
+
+    @Operation(summary = "获取指定 assistant 的文件列表")
+    @GetMapping("/assistantFileList/{assistantsId}")
+    public BasePageResp<AssistantFile> CreateAssistantFileReq(@PathVariable("assistantsId") String assistantsId, PageReq pageReq) {
+        return assistantsService.assistantsFileList(assistantsId, pageReq);
     }
 }
