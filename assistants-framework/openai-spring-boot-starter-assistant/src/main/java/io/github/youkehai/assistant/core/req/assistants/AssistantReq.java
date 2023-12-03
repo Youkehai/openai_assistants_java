@@ -12,10 +12,11 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CreateAssistantReq extends BaseReq {
+public class AssistantReq extends BaseReq {
 
     /**
      * 使用的模型
+     * 可使用 <a href="https://platform.openai.com/docs/api-reference/models/list">链接</a>
      */
     private String model;
 

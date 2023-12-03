@@ -12,6 +12,7 @@ import io.github.youkehai.assistant.core.resp.assistants.Assistants;
 import io.github.youkehai.assistant.core.resp.file.File;
 import io.github.youkehai.assistant.core.resp.message.Message;
 import io.github.youkehai.assistant.core.resp.run.Run;
+import io.github.youkehai.assistant.core.resp.run.RunStep;
 import io.github.youkehai.assistant.core.resp.thread.Thread;
 import io.github.youkehai.assistant.core.service.AssistantsMessageApiService;
 import io.github.youkehai.assistant.core.service.AssistantsRunApiService;
@@ -56,20 +57,20 @@ public class AssistantsApiController {
     @Operation(summary = "发送并运行消息")
     @PostMapping("/message/{threadId}")
     public Run messageList(@PathVariable("threadId") String threadId, CreateAndRunReq req) {
-        assistantsMessageApiService.createMessage(CommonPathReq.newByThreadId(threadId), new CreateMessageReq().setContent(req.getContent()));
-        return assistantsRunApiService.create(CommonPathReq.newByThreadId(threadId), new CreateRunReq().setAssistant_id(req.getAssistant_id()));
+        assistantsMessageApiService.createMessage(threadId, new CreateMessageReq().setContent(req.getContent()));
+        return assistantsRunApiService.createRun(threadId, new CreateRunReq().setAssistant_id(req.getAssistant_id()));
     }
 
     @Operation(summary = "获取线程信息")
     @GetMapping("/thread/{threadId}")
     public Thread messageList(@PathVariable("threadId") String threadId) {
-        return assistantsThreadApiService.retrieveThread(CommonPathReq.newByThreadId(threadId));
+        return assistantsThreadApiService.retrieveThread(threadId);
     }
 
     @Operation(summary = "获取线程信息")
     @GetMapping("/assistants/{assistantsId}")
     public Assistants retrieveAssistants(@PathVariable("assistantsId") String assistantsId) {
-        return assistantsService.retrieveAssistants(new CommonPathReq().setAssistantsId(assistantsId));
+        return assistantsService.retrieveAssistants(assistantsId);
     }
 
     @Operation(summary = "单纯的只上传文件，给某次问答使用")
@@ -93,5 +94,27 @@ public class AssistantsApiController {
     @GetMapping("/assistantFileList/{assistantsId}")
     public BasePageResp<AssistantFile> CreateAssistantFileReq(@PathVariable("assistantsId") String assistantsId, PageReq pageReq) {
         return assistantsService.assistantsFileList(assistantsId, pageReq);
+    }
+
+    @Operation(summary = "获取指定 threadId 中run运行情况")
+    @GetMapping("/runList/{threadId}")
+    public BasePageResp<Run> getRunList(@PathVariable("threadId") String threadId,
+                                                        PageReq pageReq) {
+        return assistantsRunApiService.getRunList(threadId, pageReq);
+    }
+
+    @Operation(summary = "获取指定 threadId 中某一个 run 的运行步骤情况")
+    @GetMapping("/runStep/{threadId}/{runId}")
+    public BasePageResp<RunStep> getRunStepList(@PathVariable("threadId") String threadId,
+                                                        @PathVariable("runId") String runId) {
+        return assistantsRunApiService.listRunSteps(threadId, runId, new PageReq());
+    }
+
+    @Operation(summary = "获取指定 threadId 中某一个 run 的运行步骤情况")
+    @GetMapping("/runStepDetail/{threadId}/{runId}/{stepId}")
+    public RunStep getRunStepList(@PathVariable("threadId") String threadId,
+                                                @PathVariable("runId") String runId,
+                                                @PathVariable("stepId")String stepId) {
+        return assistantsRunApiService.retrieveRunStep(threadId, runId,stepId);
     }
 }

@@ -89,9 +89,11 @@ public abstract class BaseService {
     }
 
     protected String request(String url, RequestUrlEnum requestUrlEnum, String reqVO) {
+        log.debug("请求【{}】接口.url:{},请求参数：{}", requestUrlEnum.getDesc(), url, reqVO);
         String result = HttpUtil.doJson(url, getHeadMap(), reqVO,
                 requestUrlEnum.getMethod().getMethod(), proxy);
         throwException(result);
+        log.debug("请求【{}】接口,返回值：{}", requestUrlEnum.getDesc(), result);
         return result;
     }
 
@@ -120,7 +122,6 @@ public abstract class BaseService {
         req.setFile(file);
         //只上传 assistants 意图的文件
         req.setPurpose(FilePurposeEnum.ASSISTANTS.getName());
-        log.debug("请求上传文件接口[file-upload_file],请求参数：{}",req);
         //转换文件
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.setCharset(StandardCharsets.UTF_8);
@@ -130,13 +131,14 @@ public abstract class BaseService {
             builder.addPart("file", new InputStreamBody(file.getInputStream(), ContentType.create("application/octet-stream", StandardCharsets.UTF_8), encodedFileName));
             builder.addTextBody("purpose", req.getPurpose());
         } catch (IOException e) {
-            log.error("上传文件，转换文件发生异常:{}",e.getMessage());
+            log.error("上传文件，转换文件发生异常:{}", e.getMessage());
             throw new RuntimeException(e);
         }
         //请求 api 上传
         String url = RequestUrlEnum.UPLOAD_FILE.getUrl(properties.getBaseurl(), null);
+        log.debug("请求【上传】接口.url:{},文件信息：{}", url, file);
         String result = HttpUtil.doPostByFormData(url, getHeadMap(), builder.build(), proxy);
-        log.debug("请求上传文件接口[file-upload_file],openai返回值：{}",result);
+        log.debug("请求【上传】接口.url:{},返回值：{}", url, result);
         throwException(result);
         return parse(result, File.class);
     }
@@ -151,9 +153,11 @@ public abstract class BaseService {
             Map<String, Object> resultMap = objectMapper.readValue(result, new TypeReference<>() {
             });
             if (resultMap.containsKey("error") && resultMap.get("error") != null) {
+                log.error("请求openai接口发生异常,返回值:{}", resultMap);
                 throw new OpenaiException(parse(objectMapper.writeValueAsString(resultMap.get("error")), ErrorResp.class));
             }
         } catch (JsonProcessingException e) {
+            log.error("返回值转换发生异常:{}", e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -192,6 +196,7 @@ public abstract class BaseService {
             bean = objectMapper.readValue(result, new TypeReference<>() {
             });
         } catch (JsonProcessingException e) {
+            log.error("分页数据转换异常:{}", e.getMessage());
             throw new RuntimeException(e);
         }
         List<T> data = bean.getData();
@@ -213,6 +218,7 @@ public abstract class BaseService {
         try {
             return objectMapper.readValue(result, elementType);
         } catch (JsonProcessingException e) {
+            log.error("openai返回值转换为类【{}】时出现异常:{}", elementType.getName(), e.getMessage());
             throw new RuntimeException(e);
         }
     }

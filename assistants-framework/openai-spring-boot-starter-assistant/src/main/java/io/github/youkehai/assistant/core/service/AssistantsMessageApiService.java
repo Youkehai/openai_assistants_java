@@ -7,12 +7,12 @@ import io.github.youkehai.assistant.core.req.PageReq;
 import io.github.youkehai.assistant.core.resp.BasePageResp;
 import io.github.youkehai.assistant.core.resp.message.Message;
 import io.github.youkehai.assistant.core.resp.message.MessageFile;
-import lombok.extern.slf4j.Slf4j;
+
+import java.util.Map;
 
 /**
  * 消息
  */
-@Slf4j
 public class AssistantsMessageApiService extends BaseService {
 
 
@@ -24,39 +24,62 @@ public class AssistantsMessageApiService extends BaseService {
      * @return 消息列表
      */
     public BasePageResp<Message> getMessageList(CommonPathReq pathReq, PageReq pageReqVO) {
-        log.debug("获取线程的消息列表[message-list_message]，路径参数:{},请求参数:{}", pathReq, pageReqVO);
-        String request = super.requestByPage(RequestUrlEnum.LIST_MESSAGE, pageReqVO, pathReq);
-        log.debug("获取线程的消息列表[message-list_message]，openai返回值：{}", request);
-        return super.parsePageData(request, Message.class);
+        return super.parsePageData(super.requestByPage(RequestUrlEnum.LIST_MESSAGE, pageReqVO, pathReq),
+                Message.class);
     }
 
     /**
      * 获取线程消息列表
      *
-     * @param pathReq          路径参数
+     * @param threadId         线程ID
      * @param createMessageReq 消息，文件 id 内容
      * @return 消息列表
      */
-    public Message createMessage(CommonPathReq pathReq, BaseReq createMessageReq) {
-        log.debug("创建消息[message-list_message]，路径参数:{},请求参数:{}", pathReq, createMessageReq);
-        String request = super.request(RequestUrlEnum.CREATE_MESSAGE, createMessageReq, pathReq);
-        log.debug("创建消息[message-list_message]，openai返回值：{}", request);
-        return parse(request, Message.class);
+    public Message createMessage(String threadId, BaseReq createMessageReq) {
+        return parse(super.request(RequestUrlEnum.CREATE_MESSAGE, createMessageReq, CommonPathReq.newByThreadId(threadId)),
+                Message.class);
+    }
+
+    /**
+     * 修改线程消息
+     *
+     * @param threadId  线程 ID
+     * @param messageId 消息 ID
+     * @param metadata  源数据
+     * @return 消息列表
+     */
+    public Message modifyMessage(String threadId, String messageId, Map<String, String> metadata) {
+        return parse(super.request(RequestUrlEnum.MODIFY_MESSAGE, new BaseReq(metadata), CommonPathReq.newByThreadId(threadId).setMessageId(messageId)),
+                Message.class);
+    }
+
+
+    /**
+     * 检索线程中，某一个消息的指定文件信息
+     *
+     * @param threadId  线程 ID
+     * @param messageId 消息 ID
+     * @param fileId    文件 ID
+     * @return 文件信息
+     */
+    public MessageFile retrieveMessageFile(String threadId, String messageId, String fileId) {
+        return parse(super.request(RequestUrlEnum.RETRIEVE_MESSAGE_FILE, CommonPathReq.newByThreadId(threadId)
+                        .setMessageId(messageId).setFileId(fileId)),
+                MessageFile.class);
     }
 
     /**
      * 获取指定消息用到的文件
-     * @param threadId 聊天线程 ID
+     *
+     * @param threadId  聊天线程 ID
      * @param messageId 消息 ID
-     * @param pageReq 分页参数
+     * @param pageReq   分页参数
      * @return 文件 list
      */
-    public BasePageResp<MessageFile> messageFileList(String threadId,String messageId,PageReq pageReq){
+    public BasePageResp<MessageFile> messageFileList(String threadId, String messageId, PageReq pageReq) {
         CommonPathReq commonPathReq = new CommonPathReq().setMessageId(messageId)
                 .setThreadId(threadId);
-        log.debug("获取线程的某一条消息的file列表[message-list_message_file]，路径参数:{},请求参数:{}", commonPathReq, pageReq);
-        String request = super.requestByPage(RequestUrlEnum.LIST_MESSAGE_FILE, pageReq,commonPathReq);
-        log.debug("获取线程的某一条消息的file列表[message-list_message_file]，openai返回值：{}", request);
-        return super.parsePageData(request, MessageFile.class);
+        return super.parsePageData(super.requestByPage(RequestUrlEnum.LIST_MESSAGE_FILE, pageReq, commonPathReq),
+                MessageFile.class);
     }
 }

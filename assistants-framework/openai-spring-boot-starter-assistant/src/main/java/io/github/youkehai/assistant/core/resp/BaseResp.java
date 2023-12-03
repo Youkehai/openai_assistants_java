@@ -3,10 +3,12 @@ package io.github.youkehai.assistant.core.resp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.youkehai.assistant.core.util.DateUtil;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.Map;
 
 @Data
+@Accessors(chain = true)
 public class BaseResp {
 
     private String createAt;

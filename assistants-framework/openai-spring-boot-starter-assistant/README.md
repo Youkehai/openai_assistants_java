@@ -13,7 +13,7 @@
 <dependency>
     <groupId>io.github.youkehai</groupId>
     <artifactId>openai-spring-boot-starter-assistant</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -38,6 +38,11 @@ kh:
 - AssistantsRunApiService 获取当前thread中运行任务，运行情况，发起运行等
 - AssistantsThreadApiService 创建，删除，查询线程
 - AssistantsService 创建，删除，查询助理信息
+
+```
+所有 service 中的方法，基本可以全部在官网中查询到对应的方法，所有 assistant api 对应的方法基本全部封装完成，
+并兼容 错误处理，请求代理，apikey负载，转对象操作，提供更便利的调用方式，以及使用 demo的展示
+```
 
 **代码中使用**
 
@@ -82,8 +87,6 @@ private AssistantsMessageApiService assistantsMessageApiService;
 
 ## 4.后续计划
 
-1.封装完所有api
-
-2.尽量跟进官网版本实时更新
+1.尽量跟进官网版本实时更新
 
 ##  
