@@ -22,7 +22,7 @@
     <groupId>io.github.youkehai</groupId>
     <artifactId>openai-spring-boot-starter-assistant</artifactId>
     <name>assistants</name>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <description>
         assistants api starter
         提供出入参的封装，解析，请求地址，状态的枚举
@@ -143,9 +143,8 @@
 
     <distributionManagement>
         <repository>
-            <!--这两个id需要和setting.xml文件中的server字段的id进行对应-->
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>release</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>ossrh</id>
