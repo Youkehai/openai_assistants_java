@@ -91,7 +91,7 @@ public class AssistantsService extends BaseService {
      * 获取助理信息
      *
      * @param assistantId 助理 Assistant ID
-     * @return 线程信息
+     * @return 助理信息
      */
     public Assistants retrieveAssistants(String assistantId) {
         return super.parse(super.request(RequestUrlEnum.RETRIEVE_ASSISTANT, new CommonPathReq().setAssistantsId(assistantId)),

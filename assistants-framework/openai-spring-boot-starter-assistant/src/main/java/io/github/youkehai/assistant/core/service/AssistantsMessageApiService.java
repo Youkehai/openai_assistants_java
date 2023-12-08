@@ -4,6 +4,7 @@ import io.github.youkehai.assistant.core.constant.RequestUrlEnum;
 import io.github.youkehai.assistant.core.req.BaseReq;
 import io.github.youkehai.assistant.core.req.CommonPathReq;
 import io.github.youkehai.assistant.core.req.PageReq;
+import io.github.youkehai.assistant.core.req.message.CreateMessageReq;
 import io.github.youkehai.assistant.core.resp.BasePageResp;
 import io.github.youkehai.assistant.core.resp.message.Message;
 import io.github.youkehai.assistant.core.resp.message.MessageFile;
@@ -19,23 +20,23 @@ public class AssistantsMessageApiService extends BaseService {
     /**
      * 获取线程消息列表
      *
-     * @param pathReq   线程 ID
-     * @param pageReqVO 分页参数
+     * @param threadId   线程 ID
+     * @param pageReq 分页参数
      * @return 消息列表
      */
-    public BasePageResp<Message> getMessageList(CommonPathReq pathReq, PageReq pageReqVO) {
-        return super.parsePageData(super.requestByPage(RequestUrlEnum.LIST_MESSAGE, pageReqVO, pathReq),
+    public BasePageResp<Message> getMessageList(String threadId, PageReq pageReq) {
+        return super.parsePageData(super.requestByPage(RequestUrlEnum.LIST_MESSAGE, pageReq, CommonPathReq.newByThreadId(threadId)),
                 Message.class);
     }
 
     /**
-     * 获取线程消息列表
+     * 发送消息
      *
      * @param threadId         线程ID
      * @param createMessageReq 消息，文件 id 内容
-     * @return 消息列表
+     * @return 发送完之后的消息
      */
-    public Message createMessage(String threadId, BaseReq createMessageReq) {
+    public Message createMessage(String threadId, CreateMessageReq createMessageReq) {
         return parse(super.request(RequestUrlEnum.CREATE_MESSAGE, createMessageReq, CommonPathReq.newByThreadId(threadId)),
                 Message.class);
     }
@@ -46,7 +47,7 @@ public class AssistantsMessageApiService extends BaseService {
      * @param threadId  线程 ID
      * @param messageId 消息 ID
      * @param metadata  源数据
-     * @return 消息列表
+     * @return 修改后的消息
      */
     public Message modifyMessage(String threadId, String messageId, Map<String, String> metadata) {
         return parse(super.request(RequestUrlEnum.MODIFY_MESSAGE, new BaseReq(metadata), CommonPathReq.newByThreadId(threadId).setMessageId(messageId)),

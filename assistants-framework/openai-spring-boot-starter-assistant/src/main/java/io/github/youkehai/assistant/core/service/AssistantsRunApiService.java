@@ -19,14 +19,14 @@ import java.util.Map;
 public class AssistantsRunApiService extends BaseService {
 
     /**
-     * 获取线程消息列表
+     * 获取线程所有的 run 任务列表分页
      *
      * @param threadId  线程 ID
-     * @param pageReqVO 分页参数
-     * @return 消息列表
+     * @param pageReq 分页参数
+     * @return run 任务列表分页
      */
-    public BasePageResp<Run> getRunList(String threadId, PageReq pageReqVO) {
-        return super.parsePageData(super.requestByPage(RequestUrlEnum.LIST_RUN, pageReqVO, CommonPathReq.newByThreadId(threadId)),
+    public BasePageResp<Run> getRunList(String threadId, PageReq pageReq) {
+        return super.parsePageData(super.requestByPage(RequestUrlEnum.LIST_RUN, pageReq, CommonPathReq.newByThreadId(threadId)),
                 Run.class);
     }
 
@@ -74,7 +74,7 @@ public class AssistantsRunApiService extends BaseService {
      * @param threadId 线程 ID
      * @param runId    run 任务 ID
      * @param metadata 源数据
-     * @return 消息列表
+     * @return 修改后的 run 对象
      */
     public Run modifyRun(String threadId, String runId, Map<String, String> metadata) {
         return parse(super.request(RequestUrlEnum.MODIFY_RUN, new BaseReq(metadata), CommonPathReq.newByThreadId(threadId)

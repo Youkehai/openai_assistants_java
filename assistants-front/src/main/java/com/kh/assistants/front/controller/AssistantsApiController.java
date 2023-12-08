@@ -47,7 +47,7 @@ public class AssistantsApiController {
     @Operation(summary = "获取消息列表")
     @GetMapping("/message/{threadId}")
     public BasePageResp<Message> messageList(@PathVariable("threadId") String threadId, PageReq pageReqVO) {
-        BasePageResp<Message> messageList = assistantsMessageApiService.getMessageList(CommonPathReq.newByThreadId(threadId), pageReqVO);
+        BasePageResp<Message> messageList = assistantsMessageApiService.getMessageList(threadId, pageReqVO);
         for (Message datum : messageList.getData()) {
             log.info("测试：{}", datum);
         }
