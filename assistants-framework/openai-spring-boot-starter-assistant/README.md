@@ -66,11 +66,11 @@ private AssistantsMessageApiService assistantsMessageApiService;
 │      │                      └─core
 │      │                          ├─constant           -- 常量包，请求地址，状态值封装
 │      │                          ├─req                -- 请求参数封装
-│      │                          │  ├─assistants      -- assistant模块相关(待完善)
-│      │                          │  ├─file			  -- file模块相关(待完善)
-│      │                          │  ├─message         -- message模块（基本完成）
-│      │                          │  ├─run			  -- run模块（基本完成）
-│      │                          │  └─thread          -- thread模块（基本完成）
+│      │                          │  ├─assistants      -- assistant模块相关
+│      │                          │  ├─file			  -- file模块相关
+│      │                          │  ├─message         -- message模块
+│      │                          │  ├─run			  -- run模块
+│      │                          │  └─thread          -- thread模块
 │      │                          ├─resp               -- 返回值模块封装
 │      │                          │  ├─assistants
 │      │                          │  ├─file
@@ -78,7 +78,8 @@ private AssistantsMessageApiService assistantsMessageApiService;
 │      │                          │  ├─run
 │      │                          │  └─thread
 │      │                          ├─service             -- 具体操作的service封装
-│      │                          └─util                -- http请求util类等其他常用类
+│      │                          ├─util                -- http请求util类等其他常用类
+│      │                          └─exception           -- 异常类的封装，业务系统可捕获具体异常，自定义错误    
 │      └─resources                                      -- 资源文件
 │          └─META-INF
 │              └─spring
