@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.5</version>
+        <version>3.1.0</version>
         <relativePath/>
     </parent>
 
@@ -22,7 +22,7 @@
     <groupId>io.github.youkehai</groupId>
     <artifactId>openai-spring-boot-starter-assistant</artifactId>
     <name>assistants</name>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <description>
         assistants api starter
         提供出入参的封装，解析，请求地址，状态的枚举
@@ -43,7 +43,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <hutool-all.version>5.8.23</hutool-all.version>
+        <hutool-all.version>5.8.25</hutool-all.version>
         <lombok.version>1.18.26</lombok.version>
         <maven.plugin.version>3.11.0</maven.plugin.version>
         <apache-httpcomponents.version>4.5.14</apache-httpcomponents.version>

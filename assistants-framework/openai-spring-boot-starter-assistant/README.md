@@ -3,7 +3,7 @@
 ## 1.版本要求
 
 - jdk17+
-- springboot 3.1.5 +
+- springboot 3.1.0 +
 
 ## 2.如何使用
 
